@@ -10,7 +10,8 @@
 
 .dashboard-header h2 {
   font-size: 2rem;
-  color: var(--text-dark);
+  color: var(--ink);
+  transition: color 0.3s ease;
 }
 
 .summary-grid {
@@ -21,50 +22,58 @@
 }
 
 .summary-card {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #1e40af 100%);
-  color: var(--white);
+  background: linear-gradient(135deg, var(--link) 0%, var(--accent) 100%);
+  color: var(--bg);
   padding: 2rem;
   border-radius: 0.75rem;
   box-shadow: var(--shadow-lg);
   text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-4px);
 }
 
 .summary-card h3 {
   margin: 0 0 1rem 0;
   font-size: 1.5rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(0, 0, 0, 0.8);
 }
 
 .summary-card p {
   margin: 0;
   font-size: 2.5rem;
   font-weight: 700;
-  color: var(--white);
+  color: var(--bg);
 }
 
 .summary-card.success-gradient {
-  background: linear-gradient(135deg, var(--success-color) 0%, #15803d 100%);
+  background: linear-gradient(135deg, var(--ok) 0%, #2a9e5e 100%);
 }
 
 .summary-card.warning-gradient {
-  background: linear-gradient(135deg, var(--warning-color) 0%, #9a3412 100%);
+  background: linear-gradient(135deg, var(--warn) 0%, #cc7a00 100%);
 }
 
 .charts-section {
-  background-color: var(--white);
+  background-color: var(--card);
+  border: 1px solid var(--border);
   border-radius: 0.75rem;
   padding: 2rem;
   box-shadow: var(--shadow);
+  transition: background-color 0.3s ease;
 }
 
 .charts-section h3 {
   margin-top: 0;
   margin-bottom: 1.5rem;
+  color: var(--ink);
 }
 
 .loading {
   text-align: center;
   padding: 3rem;
-  color: var(--text-light);
+  color: var(--muted);
   font-size: 1.1rem;
 }

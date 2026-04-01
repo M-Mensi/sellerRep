@@ -3,12 +3,18 @@ const router = express.Router();
 const controller = require("../controllers/achievement.controller");
 const { authenticate } = require("../middleware/auth.middleware");
 const { authorizeRoles } = require("../middleware/role.middleware");
+const {
+  validateAchievement,
+  handleValidationErrors,
+} = require("../middleware/validation.middleware");
 
 // Employee → add achievement
 router.post(
   "/",
   authenticate,
   authorizeRoles("employee", "admin"),
+  validateAchievement,
+  handleValidationErrors,
   controller.createAchievement,
 );
 
@@ -20,11 +26,11 @@ router.get(
   controller.getMyAchievements,
 );
 
-// Admin → view all achievements
+// Employee & Admin → view all achievements (for dashboards)
 router.get(
   "/",
   authenticate,
-  authorizeRoles("admin"),
+  authorizeRoles("employee", "admin"),
   controller.getAllAchievements,
 );
 

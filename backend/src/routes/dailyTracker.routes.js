@@ -3,12 +3,18 @@ const router = express.Router();
 const controller = require("../controllers/dailyTracker.controller");
 const { authenticate } = require("../middleware/auth.middleware");
 const { authorizeRoles } = require("../middleware/role.middleware");
+const {
+  validateDailyTracker,
+  handleValidationErrors,
+} = require("../middleware/validation.middleware");
 
 // Employee → submit / update daily activity
 router.post(
   "/",
   authenticate,
   authorizeRoles("employee", "admin"),
+  validateDailyTracker,
+  handleValidationErrors,
   controller.submitDailyTracker,
 );
 
@@ -20,11 +26,11 @@ router.get(
   controller.getMyDailyTracker,
 );
 
-// Admin → view all activity
+// Employee & Admin → view all activity (for dashboards)
 router.get(
   "/",
   authenticate,
-  authorizeRoles("admin"),
+  authorizeRoles("employee", "admin"),
   controller.getAllDailyTrackers,
 );
 

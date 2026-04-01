@@ -1,6 +1,6 @@
 const LeaveRequest = require("../models/leaveRequest.model");
 
-exports.createLeaveRequest = async (req, res) => {
+exports.createLeaveRequest = async (req, res, next) => {
   try {
     await LeaveRequest.createLeaveRequest({
       ...req.body,
@@ -9,31 +9,31 @@ exports.createLeaveRequest = async (req, res) => {
 
     res.status(201).json({ message: "Leave request submitted" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getMyLeaveRequests = async (req, res) => {
+exports.getMyLeaveRequests = async (req, res, next) => {
   try {
     const [rows] = await LeaveRequest.getLeaveRequestsByEmployee(
       req.user.employee_id,
     );
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getAllLeaveRequests = async (req, res) => {
+exports.getAllLeaveRequests = async (req, res, next) => {
   try {
     const [rows] = await LeaveRequest.getAllLeaveRequests();
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.reviewLeaveRequest = async (req, res) => {
+exports.reviewLeaveRequest = async (req, res, next) => {
   const { status } = req.body;
 
   if (!["approved", "declined"].includes(status)) {
@@ -45,6 +45,6 @@ exports.reviewLeaveRequest = async (req, res) => {
 
     res.json({ message: `Leave request ${status}` });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

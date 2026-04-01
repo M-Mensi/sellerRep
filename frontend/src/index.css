@@ -5,29 +5,79 @@
 }
 
 :root {
-  --primary-color: #2563eb;
-  --secondary-color: #64748b;
-  --success-color: #16a34a;
-  --danger-color: #dc2626;
-  --warning-color: #ea580c;
-  --light-bg: #f8fafc;
-  --white: #ffffff;
-  --border-color: #e2e8f0;
-  --text-dark: #1e293b;
-  --text-light: #64748b;
+  /* Dark theme (default) */
+  --bg: #0f1115;
+  --card: #151923;
+  --ink: #e6e6e6;
+  --muted: #a9b1c3;
+  --accent: #f9d648;
+  --link: #7cc0ff;
+  --ok: #39d98a;
+  --warn: #ffb020;
+  --no: #ff5d5d;
+  --border: #2a3140;
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  --shadow-float: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+  /* Legacy color mappings for compatibility */
+  --primary-color: #7cc0ff;
+  --secondary-color: #a9b1c3;
+  --success-color: #39d98a;
+  --danger-color: #ff5d5d;
+  --warning-color: #ffb020;
+  --light-bg: #0f1115;
+  --white: #151923;
+  --border-color: #2a3140;
+  --text-dark: #e6e6e6;
+  --text-light: #a9b1c3;
+}
+
+/* Light theme overrides */
+:root.light-theme {
+  --bg: #f8f9fc;
+  --card: #ffffff;
+  --ink: #000000;
+  --muted: #4e5566;
+  --accent: #f5b042;
+  --link: #0066cc;
+  --ok: #1f8b4c;
+  --warn: #cc7a00;
+  --no: #c23d3d;
+  --border: #dce3ec;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --shadow-float: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+  /* Legacy color mappings for compatibility */
+  --primary-color: #0066cc;
+  --secondary-color: #4e5566;
+  --success-color: #1f8b4c;
+  --danger-color: #c23d3d;
+  --warning-color: #cc7a00;
+  --light-bg: #f8f9fc;
+  --white: #ffffff;
+  --border-color: #dce3ec;
+  --text-dark: #000000;
+  --text-light: #4e5566;
 }
 
 body {
   margin: 0;
   font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
-    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    "Segoe UI",
+    system-ui,
+    -apple-system,
+    Roboto,
+    Arial,
+    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--light-bg);
-  color: var(--text-dark);
+  background-color: var(--bg);
+  color: var(--ink);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 code {
@@ -42,7 +92,7 @@ h4,
 h5,
 h6 {
   margin-top: 0;
-  color: var(--text-dark);
+  color: var(--ink);
   font-weight: 600;
 }
 
@@ -57,18 +107,18 @@ h3 {
 }
 
 p {
-  color: var(--text-light);
+  color: var(--muted);
   line-height: 1.6;
 }
 
 a {
-  color: var(--primary-color);
+  color: var(--link);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 a:hover {
-  color: #1d4ed8;
+  text-decoration: underline;
 }
 
 button {

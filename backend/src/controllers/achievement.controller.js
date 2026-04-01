@@ -1,6 +1,6 @@
 const Achievement = require("../models/achievement.model");
 
-exports.createAchievement = async (req, res) => {
+exports.createAchievement = async (req, res, next) => {
   try {
     await Achievement.createAchievement({
       ...req.body,
@@ -9,26 +9,26 @@ exports.createAchievement = async (req, res) => {
 
     res.status(201).json({ message: "Achievement added successfully" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getMyAchievements = async (req, res) => {
+exports.getMyAchievements = async (req, res, next) => {
   try {
     const [rows] = await Achievement.getAchievementsByEmployee(
       req.user.employee_id,
     );
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getAllAchievements = async (req, res) => {
+exports.getAllAchievements = async (req, res, next) => {
   try {
     const [rows] = await Achievement.getAllAchievements();
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

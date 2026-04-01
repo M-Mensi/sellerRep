@@ -12,18 +12,23 @@ router.post(
   controller.createError,
 );
 
-// Admin → view all issues
-router.get("/", authenticate, authorizeRoles("admin"), controller.getErrors);
+// Employee & Admin → view all issues
+router.get(
+  "/",
+  authenticate,
+  authorizeRoles("employee", "admin"),
+  controller.getErrors,
+);
 
-// Admin → view timeline
+// Employee & Admin → view error timeline
 router.get(
   "/:id/timeline",
   authenticate,
-  authorizeRoles("admin"),
+  authorizeRoles("employee", "admin"),
   controller.getErrorTimeline,
 );
 
-// Admin → add timeline action
+// Admin only → add timeline action
 router.post(
   "/:id/actions",
   authenticate,

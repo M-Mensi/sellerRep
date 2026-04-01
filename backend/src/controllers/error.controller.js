@@ -1,7 +1,7 @@
 const ErrorModel = require("../models/error.model");
 const ErrorAction = require("../models/errorAction.model");
 
-exports.createError = async (req, res) => {
+exports.createError = async (req, res, next) => {
   try {
     await ErrorModel.createError({
       ...req.body,
@@ -10,29 +10,29 @@ exports.createError = async (req, res) => {
 
     res.status(201).json({ message: "Issue reported successfully" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getErrors = async (req, res) => {
+exports.getErrors = async (req, res, next) => {
   try {
     const [rows] = await ErrorModel.getAllErrors();
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getErrorTimeline = async (req, res) => {
+exports.getErrorTimeline = async (req, res, next) => {
   try {
     const [timeline] = await ErrorAction.getTimelineByError(req.params.id);
     res.json(timeline);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.addErrorAction = async (req, res) => {
+exports.addErrorAction = async (req, res, next) => {
   try {
     await ErrorAction.addAction({
       error_id: req.params.id,
@@ -47,6 +47,6 @@ exports.addErrorAction = async (req, res) => {
 
     res.status(201).json({ message: "Action added to timeline" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

@@ -1,6 +1,6 @@
 const DailyTracker = require("../models/dailyTracker.model");
 
-exports.submitDailyTracker = async (req, res) => {
+exports.submitDailyTracker = async (req, res, next) => {
   try {
     await DailyTracker.createOrUpdateDailyTracker({
       ...req.body,
@@ -9,26 +9,26 @@ exports.submitDailyTracker = async (req, res) => {
 
     res.status(201).json({ message: "Daily activity saved successfully" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getMyDailyTracker = async (req, res) => {
+exports.getMyDailyTracker = async (req, res, next) => {
   try {
     const [rows] = await DailyTracker.getDailyTrackerByEmployee(
       req.user.employee_id,
     );
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getAllDailyTrackers = async (req, res) => {
+exports.getAllDailyTrackers = async (req, res, next) => {
   try {
     const [rows] = await DailyTracker.getAllDailyTrackers();
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

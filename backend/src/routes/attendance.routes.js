@@ -14,7 +14,7 @@ router.post(
 router.get(
   "/:id",
   authenticate,
-  authorizeRoles("admin"),
+  authorizeRoles("employee", "admin"),
   controller.getEmployeeAttendance,
 );
 

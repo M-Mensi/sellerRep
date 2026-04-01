@@ -3,12 +3,18 @@ const router = express.Router();
 const controller = require("../controllers/client.controller");
 const { authenticate } = require("../middleware/auth.middleware");
 const { authorizeRoles } = require("../middleware/role.middleware");
+const {
+  validateClient,
+  handleValidationErrors,
+} = require("../middleware/validation.middleware");
 
 // Admin & employee can create clients
 router.post(
   "/",
   authenticate,
   authorizeRoles("admin", "employee"),
+  validateClient,
+  handleValidationErrors,
   controller.createClient,
 );
 
@@ -20,11 +26,11 @@ router.get(
   controller.getClientsByEmployee,
 );
 
-// Admin → all clients
+// Employee & Admin → view all clients (for dashboards)
 router.get(
   "/",
   authenticate,
-  authorizeRoles("admin"),
+  authorizeRoles("employee", "admin"),
   controller.getAllClients,
 );
 

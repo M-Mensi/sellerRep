@@ -1,15 +1,15 @@
 const Client = require("../models/client.model");
 
-exports.createClient = async (req, res) => {
+exports.createClient = async (req, res, next) => {
   try {
     await Client.createClient(req.body);
     res.status(201).json({ message: "Client created successfully" });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getClientsByEmployee = async (req, res) => {
+exports.getClientsByEmployee = async (req, res, next) => {
   try {
     const employeeId =
       req.user.role === "employee"
@@ -19,15 +19,15 @@ exports.getClientsByEmployee = async (req, res) => {
     const [rows] = await Client.getClientsByEmployee(employeeId);
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };
 
-exports.getAllClients = async (req, res) => {
+exports.getAllClients = async (req, res, next) => {
   try {
     const [rows] = await Client.getAllClients();
     res.json(rows);
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    next(err);
   }
 };

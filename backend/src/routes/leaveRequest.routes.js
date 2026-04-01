@@ -3,12 +3,19 @@ const router = express.Router();
 const controller = require("../controllers/leaveRequest.controller");
 const { authenticate } = require("../middleware/auth.middleware");
 const { authorizeRoles } = require("../middleware/role.middleware");
+const {
+  validateLeaveRequest,
+  validateId,
+  handleValidationErrors,
+} = require("../middleware/validation.middleware");
 
 // Employee → submit leave
 router.post(
   "/",
   authenticate,
   authorizeRoles("employee", "admin"),
+  validateLeaveRequest,
+  handleValidationErrors,
   controller.createLeaveRequest,
 );
 
@@ -20,19 +27,21 @@ router.get(
   controller.getMyLeaveRequests,
 );
 
-// Admin → view all requests
+// Employee & Admin → view all requests (for dashboards)
 router.get(
   "/",
   authenticate,
-  authorizeRoles("admin"),
+  authorizeRoles("employee", "admin"),
   controller.getAllLeaveRequests,
 );
 
-// Admin → approve / decline
+// Admin only → approve / decline
 router.patch(
   "/:id/review",
   authenticate,
   authorizeRoles("admin"),
+  validateId,
+  handleValidationErrors,
   controller.reviewLeaveRequest,
 );
 
