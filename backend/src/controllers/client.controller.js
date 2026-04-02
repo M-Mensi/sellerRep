@@ -2,10 +2,16 @@ const Client = require("../models/client.model");
 
 // Callback-based controllers
 exports.createClient = (req, res, next) => {
-  Client.createClient(req.body, (err, result) => {
-    if (err) return next(err);
-    res.status(201).json({ message: "Client created successfully" });
-  });
+  Client.createClient(
+    {
+      ...req.body,
+      employee_id: req.user.employee_id,
+    },
+    (err, result) => {
+      if (err) return next(err);
+      res.status(201).json({ message: "Client created successfully" });
+    },
+  );
 };
 
 exports.getClientsByEmployee = (req, res, next) => {

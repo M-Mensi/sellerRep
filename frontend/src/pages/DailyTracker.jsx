@@ -48,18 +48,25 @@ export default function DailyTracker() {
   // Calculate statistics
   const stats = {
     totalDays: trackers.length,
-    totalCalls: trackers.reduce((sum, t) => sum + (t.calls || 0), 0),
-    totalEmails: trackers.reduce((sum, t) => sum + (t.emails || 0), 0),
-    totalConnects: trackers.reduce((sum, t) => sum + (t.connects || 0), 0),
-    totalNewClients: trackers.reduce((sum, t) => sum + (t.new_clients || 0), 0),
+    totalCalls: trackers.reduce((sum, t) => sum + (t.calls_count || 0), 0),
+    totalEmails: trackers.reduce((sum, t) => sum + (t.emails_count || 0), 0),
+    totalConnects: trackers.reduce(
+      (sum, t) => sum + (t.connections_count || 0),
+      0,
+    ),
+    totalNewClients: trackers.reduce(
+      (sum, t) => sum + (t.new_clients_count || 0),
+      0,
+    ),
     avgCallsPerDay: trackers.length
       ? (
-          trackers.reduce((sum, t) => sum + (t.calls || 0), 0) / trackers.length
+          trackers.reduce((sum, t) => sum + (t.calls_count || 0), 0) /
+          trackers.length
         ).toFixed(1)
       : 0,
     avgClientsPerDay: trackers.length
       ? (
-          trackers.reduce((sum, t) => sum + (t.new_clients || 0), 0) /
+          trackers.reduce((sum, t) => sum + (t.new_clients_count || 0), 0) /
           trackers.length
         ).toFixed(1)
       : 0,
@@ -176,7 +183,7 @@ export default function DailyTracker() {
                     />
                     <Area
                       type="monotone"
-                      dataKey="calls"
+                      dataKey="calls_count"
                       stroke="#7cc0ff"
                       fillOpacity={1}
                       fill="url(#colorCalls)"
@@ -208,14 +215,18 @@ export default function DailyTracker() {
                       }}
                     />
                     <Legend wrapperStyle={{ color: "var(--ink)" }} />
-                    <Bar dataKey="calls" fill="#7cc0ff" radius={[4, 4, 0, 0]} />
                     <Bar
-                      dataKey="emails"
+                      dataKey="calls_count"
+                      fill="#7cc0ff"
+                      radius={[4, 4, 0, 0]}
+                    />
+                    <Bar
+                      dataKey="emails_count"
                       fill="#39d98a"
                       radius={[4, 4, 0, 0]}
                     />
                     <Bar
-                      dataKey="new_clients"
+                      dataKey="new_clients_count"
                       fill="#ffb020"
                       radius={[4, 4, 0, 0]}
                     />
@@ -261,11 +272,17 @@ export default function DailyTracker() {
                       <td className="date-cell">
                         {tracker.activity_date || "—"}
                       </td>
-                      <td className="metric-cell">{tracker.calls || 0}</td>
-                      <td className="metric-cell">{tracker.emails || 0}</td>
-                      <td className="metric-cell">{tracker.connects || 0}</td>
+                      <td className="metric-cell">
+                        {tracker.calls_count || 0}
+                      </td>
+                      <td className="metric-cell">
+                        {tracker.emails_count || 0}
+                      </td>
+                      <td className="metric-cell">
+                        {tracker.connections_count || 0}
+                      </td>
                       <td className="metric-cell highlight">
-                        {tracker.new_clients || 0}
+                        {tracker.new_clients_count || 0}
                       </td>
                       <td className="notes-cell">{tracker.notes || "—"}</td>
                     </tr>

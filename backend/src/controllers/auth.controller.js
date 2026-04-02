@@ -25,25 +25,45 @@ exports.login = (req, res, next) => {
 
     if (password === user.password_hash) {
       console.log("Password match (plaintext) for user:", email);
-      // Generate JWT token
-      console.log("Password match for user:", email);
-      const token = jwt.sign(
-        {
-          id: user.id,
-          role: user.role,
-          employee_id: user.employee_id,
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN || "24h" },
-      );
+      // Get employee_id from Employees table
+      const db = require("../config/db");
+      const employeeSql = 'SELECT id FROM "Employees" WHERE user_id = $1';
+      db.query(employeeSql, [user.id], (empErr, empResult) => {
+        if (empErr) {
+          console.error("Error fetching employee:", empErr.message);
+          return next(empErr);
+        }
 
-      console.log("Generated JWT token for user:", email);
-      res.json({
-        token,
-        user: { id: user.id, email: user.email, role: user.role },
+        const empRows = empResult.rows || [];
+        const employee_id = empRows.length > 0 ? empRows[0].id : null;
+
+        console.log("Employee ID:", employee_id);
+        // Generate JWT token
+        const token = jwt.sign(
+          {
+            id: user.id,
+            role: user.role,
+            employee_id: employee_id,
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: process.env.JWT_EXPIRES_IN || "24h" },
+        );
+
+        console.log("Generated JWT token for user:", email);
+        res.json({
+          token,
+          user: { id: user.id, email: user.email, role: user.role },
+        });
       });
+    } else {
+      console.log(
+        "Password mismatch for user:",
+        email,
+        password,
+        user.password_hash,
+      );
+      return res.status(401).json({ message: "Invalid email or password" });
     }
-
     /*
     // Compare password with hashed password using bcrypt
     bcrypt.compare(password, user.password_hash, (bcryptErr, isMatch) => {

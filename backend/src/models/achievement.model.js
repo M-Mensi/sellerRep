@@ -2,6 +2,7 @@ const db = require("../config/db");
 
 // Callback-based queries
 exports.createAchievement = (data, callback) => {
+  console.log("Creating achievement with data:", data);
   const sql = `
     INSERT INTO "Achievements" 
     (employee_id, title, description, achieved_on)

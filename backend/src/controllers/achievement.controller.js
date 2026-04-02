@@ -2,6 +2,7 @@ const Achievement = require("../models/achievement.model");
 
 // Callback-based controllers
 exports.createAchievement = (req, res, next) => {
+  console.log("Creating achievement with data:", req.body);
   Achievement.createAchievement(
     {
       ...req.body,

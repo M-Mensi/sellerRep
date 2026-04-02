@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { submitDailyTracker } from "../api/dailyTracker.api";
+import { useAuth } from "../auth/AuthContext";
 import "../styles/FormModal.css";
 
 export default function DailyTrackerModal({ isOpen, onClose, onSubmit }) {
+  const { user } = useAuth();
   const [form, setForm] = useState({
     activity_date: "",
     calls: 0,
@@ -26,12 +28,19 @@ export default function DailyTrackerModal({ isOpen, onClose, onSubmit }) {
   }, [isOpen]);
 
   const handleSubmit = async (e) => {
+    console.log("Handling form submission with data:", form);
     e.preventDefault();
     setLoading(true);
     setError(null);
     try {
-      await submitDailyTracker(form);
-      onSubmit?.(form);
+      console.log(
+        "Submitting daily tracker with form data: DailyTrackerModal",
+        form,
+      );
+      console.log("employee_id:", user?.employee_id);
+      const formData = { ...form, employee_id: user?.employee_id };
+      await submitDailyTracker(formData);
+      onSubmit?.(formData);
       setForm({
         activity_date: "",
         calls: 0,

@@ -4,9 +4,10 @@ import "../styles/FormModal.css";
 
 export default function LeaveRequestsModal({ isOpen, onClose, onSubmit }) {
   const [form, setForm] = useState({
+    request_type: "leave",
     start_date: "",
     end_date: "",
-    leave_type: "sick",
+    leave_type: "annual",
     reason: "",
   });
   const [loading, setLoading] = useState(false);
@@ -24,6 +25,7 @@ export default function LeaveRequestsModal({ isOpen, onClose, onSubmit }) {
   }, [isOpen]);
 
   const handleSubmit = async (e) => {
+    console.log("Handling form submission with data:", form);
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -31,9 +33,10 @@ export default function LeaveRequestsModal({ isOpen, onClose, onSubmit }) {
       await submitLeaveRequest(form);
       onSubmit?.(form);
       setForm({
+        request_type: "leave",
         start_date: "",
         end_date: "",
-        leave_type: "sick",
+        leave_type: "annual",
         reason: "",
       });
       onClose();
@@ -70,6 +73,23 @@ export default function LeaveRequestsModal({ isOpen, onClose, onSubmit }) {
         {error && <div className="alert alert-error">{error}</div>}
 
         <form className="modal-form" onSubmit={handleSubmit}>
+          <div className="form-row">
+            <label htmlFor="request_type">Request Type *</label>
+            <select
+              id="request_type"
+              required
+              value={form.request_type}
+              onChange={(e) =>
+                setForm({ ...form, request_type: e.target.value })
+              }
+              className="form-input"
+            >
+              <option value="leave">Leave</option>
+              <option value="equipment">Equipment</option>
+              <option value="training">Training</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
           <div
             style={{
               display: "grid",
@@ -104,19 +124,19 @@ export default function LeaveRequestsModal({ isOpen, onClose, onSubmit }) {
           </div>
 
           <div className="form-row">
-            <label htmlFor="leave_type">Leave Type *</label>
+            <label htmlFor="leave_type">Leave Type</label>
             <select
               id="leave_type"
-              required
-              value={form.leave_type || "sick"}
+              value={form.leave_type || ""}
               onChange={(e) => setForm({ ...form, leave_type: e.target.value })}
               className="form-input"
             >
-              <option value="sick">Sick Leave</option>
-              <option value="vacation">Vacation</option>
-              <option value="personal">Personal</option>
+              <option value="">Not Specified</option>
+              <option value="annual">Annual</option>
+              <option value="sick">Sick</option>
+              <option value="unpaid">Unpaid</option>
               <option value="maternity">Maternity</option>
-              <option value="other">Other</option>
+              <option value="paternity">Paternity</option>
             </select>
           </div>
 

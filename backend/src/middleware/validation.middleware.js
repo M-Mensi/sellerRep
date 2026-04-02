@@ -50,7 +50,7 @@ exports.validateDailyTracker = [
 
 // Achievement validations
 exports.validateAchievement = [
-  body("achievement_date").isISO8601().withMessage("Valid date is required"),
+  body("achieved_on").isISO8601().withMessage("Valid date is required"),
   body("title")
     .trim()
     .isLength({ min: 3, max: 255 })
@@ -59,18 +59,17 @@ exports.validateAchievement = [
     .trim()
     .isLength({ min: 5, max: 1000 })
     .withMessage("Description must be between 5 and 1000 characters"),
-  body("category")
-    .optional()
-    .trim()
-    .isLength({ max: 100 })
-    .withMessage("Category must be 100 characters or less"),
   body("impact")
-    .isIn(["High", "Medium", "Low"])
-    .withMessage("Impact must be High, Medium, or Low"),
+    .optional()
+    .isIn(["low", "medium", "high"])
+    .withMessage("Impact must be low, medium, or high"),
 ];
 
 // Leave Request validations
 exports.validateLeaveRequest = [
+  body("request_type")
+    .isIn(["leave", "equipment", "training", "other"])
+    .withMessage("Invalid request type"),
   body("start_date").isISO8601().withMessage("Valid start date is required"),
   body("end_date")
     .isISO8601()
@@ -82,7 +81,8 @@ exports.validateLeaveRequest = [
       return true;
     }),
   body("leave_type")
-    .isIn(["Sick", "Vacation", "Personal", "Maternity", "Other"])
+    .optional()
+    .isIn(["annual", "sick", "unpaid", "maternity", "paternity"])
     .withMessage("Invalid leave type"),
   body("reason")
     .trim()

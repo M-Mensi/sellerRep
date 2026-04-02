@@ -8,6 +8,7 @@ exports.createLeaveRequest = (req, res, next) => {
       employee_id: req.user.employee_id,
     },
     (err, result) => {
+      console.log("Create leave request result:", err, result);
       if (err) return next(err);
       res.status(201).json({ message: "Leave request submitted" });
     },

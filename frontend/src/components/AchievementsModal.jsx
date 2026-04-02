@@ -4,10 +4,9 @@ import "../styles/FormModal.css";
 
 export default function AchievementsModal({ isOpen, onClose, onSubmit }) {
   const [form, setForm] = useState({
-    achievement_date: "",
+    achieved_on: "",
     title: "",
     description: "",
-    category: "",
     impact: "",
   });
   const [loading, setLoading] = useState(false);
@@ -32,10 +31,9 @@ export default function AchievementsModal({ isOpen, onClose, onSubmit }) {
       await submitAchievement(form);
       onSubmit?.(form);
       setForm({
-        achievement_date: "",
+        achieved_on: "",
         title: "",
         description: "",
-        category: "",
         impact: "",
       });
       onClose();
@@ -73,14 +71,14 @@ export default function AchievementsModal({ isOpen, onClose, onSubmit }) {
 
         <form className="modal-form" onSubmit={handleSubmit}>
           <div className="form-row">
-            <label htmlFor="achievement_date">Date *</label>
+            <label htmlFor="achieved_on">Date *</label>
             <input
-              id="achievement_date"
+              id="achieved_on"
               type="date"
               required
-              value={form.achievement_date || ""}
+              value={form.achieved_on || ""}
               onChange={(e) =>
-                setForm({ ...form, achievement_date: e.target.value })
+                setForm({ ...form, achieved_on: e.target.value })
               }
               className="form-input"
             />
@@ -102,21 +100,10 @@ export default function AchievementsModal({ isOpen, onClose, onSubmit }) {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "1fr 1fr",
+              gridTemplateColumns: "1fr",
               gap: "1rem",
             }}
           >
-            <div className="form-row">
-              <label htmlFor="category">Category</label>
-              <input
-                id="category"
-                type="text"
-                placeholder="e.g., Sales, Project, Team"
-                value={form.category || ""}
-                onChange={(e) => setForm({ ...form, category: e.target.value })}
-                className="form-input"
-              />
-            </div>
             <div className="form-row">
               <label htmlFor="impact">Impact</label>
               <select
@@ -126,9 +113,9 @@ export default function AchievementsModal({ isOpen, onClose, onSubmit }) {
                 className="form-input"
               >
                 <option value="">Select impact level</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
               </select>
             </div>
           </div>
