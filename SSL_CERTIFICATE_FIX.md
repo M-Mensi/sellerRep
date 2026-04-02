@@ -85,7 +85,7 @@ type .env
 ```
 DB_HOST=pg-d0deaeb-mensimohamed.h.aivencloud.com
 DB_USER=avnadmin
-DB_PASSWORD=AVNS_rm1HUeJV0lyCQyBfmbt
+DB_PASSWORD=AivenDBPasswordHere
 DB_NAME=defaultdb
 DB_PORT=10738
 NODE_ENV=development
@@ -117,7 +117,6 @@ psql -h pg-d0deaeb-mensimohamed.h.aivencloud.com \
      -d defaultdb \
      -c "SELECT VERSION();"
 
-# You'll be prompted for password: AVNS_rm1HUeJV0lyCQyBfmbt
 ```
 
 ---

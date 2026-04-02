@@ -52,7 +52,7 @@ npm install
 ```
 DB_HOST=pg-d0deaeb-mensimohamed.h.aivencloud.com
 DB_USER=avnadmin
-DB_PASSWORD=AVNS_rm1HUeJV0lyCQyBfmbt
+DB_PASSWORD=AivenDBPasswordHere
 DB_NAME=defaultdb
 DB_PORT=10738
 DB_SSL_CERT=<your-ssl-certificate>
@@ -147,7 +147,7 @@ psql -h pg-d0deaeb-mensimohamed.h.aivencloud.com \
      -d defaultdb \
      -f DATABASE_SCHEMA_POSTGRESQL.sql
 
-# You'll be prompted for password: AVNS_rm1HUeJV0lyCQyBfmbt
+# You'll be prompted for password: AivenDBPasswordHere
 ```
 
 ### Option 3: Using pgAdmin Web Interface
@@ -186,7 +186,7 @@ type .env
 ```
 DB_HOST=pg-d0deaeb-mensimohamed.h.aivencloud.com
 DB_USER=avnadmin
-DB_PASSWORD=AVNS_rm1HUeJV0lyCQyBfmbt
+DB_PASSWORD=AivenDBPasswordHere
 DB_NAME=defaultdb
 DB_PORT=10738
 PORT=3000

@@ -33,7 +33,7 @@ Your Node.js backend has been successfully configured for PostgreSQL!
 - ✅ DB_HOST: `pg-d0deaeb-mensimohamed.h.aivencloud.com`
 - ✅ DB_PORT: `10738` (Aiven PostgreSQL port)
 - ✅ DB_USER: `avnadmin`
-- ✅ DB_PASSWORD: `AVNS_rm1HUeJV0lyCQyBfmbt`
+- ✅ DB_PASSWORD: `AivenDBPasswordHere`
 - ✅ DB_NAME: `defaultdb`
 - ✅ DB_SSL_CERT: (SSL certificate included)
 - ✅ Added NODE_ENV and CORS_ORIGINS variables

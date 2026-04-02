@@ -84,7 +84,7 @@ psql -h pg-d0deaeb-mensimohamed.h.aivencloud.com \
      -f DATABASE_SCHEMA_POSTGRESQL.sql
 ```
 
-Password: `AVNS_rm1HUeJV0lyCQyBfmbt`
+Password: `AivenDBPasswordHere`
 
 ---
 
