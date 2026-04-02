@@ -1,52 +1,55 @@
 const ErrorModel = require("../models/error.model");
 const ErrorAction = require("../models/errorAction.model");
 
-exports.createError = async (req, res, next) => {
-  try {
-    await ErrorModel.createError({
+// Callback-based controllers
+exports.createError = (req, res, next) => {
+  ErrorModel.createError(
+    {
       ...req.body,
       employee_id: req.user.employee_id,
-    });
-
-    res.status(201).json({ message: "Issue reported successfully" });
-  } catch (err) {
-    next(err);
-  }
+    },
+    (err, result) => {
+      if (err) return next(err);
+      res.status(201).json({ message: "Issue reported successfully" });
+    },
+  );
 };
 
-exports.getErrors = async (req, res, next) => {
-  try {
-    const [rows] = await ErrorModel.getAllErrors();
+exports.getErrors = (req, res, next) => {
+  ErrorModel.getAllErrors((err, result) => {
+    if (err) return next(err);
+    const rows = result.rows || [];
     res.json(rows);
-  } catch (err) {
-    next(err);
-  }
+  });
 };
 
-exports.getErrorTimeline = async (req, res, next) => {
-  try {
-    const [timeline] = await ErrorAction.getTimelineByError(req.params.id);
+exports.getErrorTimeline = (req, res, next) => {
+  ErrorAction.getTimelineByError(req.params.id, (err, result) => {
+    if (err) return next(err);
+    const timeline = result.rows || [];
     res.json(timeline);
-  } catch (err) {
-    next(err);
-  }
+  });
 };
 
-exports.addErrorAction = async (req, res, next) => {
-  try {
-    await ErrorAction.addAction({
+exports.addErrorAction = (req, res, next) => {
+  ErrorAction.addAction(
+    {
       error_id: req.params.id,
-      admin_id: req.user.id,
-      action: req.body.action,
-      status_after: req.body.status_after,
-    });
+      action_by: req.user.id,
+      action_type: req.body.action_type || "comment",
+      action_text: req.body.action,
+    },
+    (err, result) => {
+      if (err) return next(err);
 
-    if (req.body.status_after === "resolved") {
-      await ErrorModel.updateErrorStatus(req.params.id, false);
-    }
-
-    res.status(201).json({ message: "Action added to timeline" });
-  } catch (err) {
-    next(err);
-  }
+      if (req.body.status_after === "resolved") {
+        ErrorModel.updateErrorStatus(req.params.id, "resolved", (updateErr) => {
+          if (updateErr) return next(updateErr);
+          res.status(201).json({ message: "Action added to timeline" });
+        });
+      } else {
+        res.status(201).json({ message: "Action added to timeline" });
+      }
+    },
+  );
 };

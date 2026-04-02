@@ -1,33 +1,28 @@
 const Client = require("../models/client.model");
 
-exports.createClient = async (req, res, next) => {
-  try {
-    await Client.createClient(req.body);
+// Callback-based controllers
+exports.createClient = (req, res, next) => {
+  Client.createClient(req.body, (err, result) => {
+    if (err) return next(err);
     res.status(201).json({ message: "Client created successfully" });
-  } catch (err) {
-    next(err);
-  }
+  });
 };
 
-exports.getClientsByEmployee = async (req, res, next) => {
-  try {
-    const employeeId =
-      req.user.role === "employee"
-        ? req.user.employee_id
-        : req.params.employeeId;
+exports.getClientsByEmployee = (req, res, next) => {
+  const employeeId =
+    req.user.role === "employee" ? req.user.employee_id : req.params.employeeId;
 
-    const [rows] = await Client.getClientsByEmployee(employeeId);
+  Client.getClientsByEmployee(employeeId, (err, result) => {
+    if (err) return next(err);
+    const rows = result.rows || [];
     res.json(rows);
-  } catch (err) {
-    next(err);
-  }
+  });
 };
 
-exports.getAllClients = async (req, res, next) => {
-  try {
-    const [rows] = await Client.getAllClients();
+exports.getAllClients = (req, res, next) => {
+  Client.getAllClients((err, result) => {
+    if (err) return next(err);
+    const rows = result.rows || [];
     res.json(rows);
-  } catch (err) {
-    next(err);
-  }
+  });
 };

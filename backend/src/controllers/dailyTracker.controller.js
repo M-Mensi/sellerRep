@@ -1,34 +1,34 @@
 const DailyTracker = require("../models/dailyTracker.model");
 
-exports.submitDailyTracker = async (req, res, next) => {
-  try {
-    await DailyTracker.createOrUpdateDailyTracker({
+// Callback-based controllers
+exports.submitDailyTracker = (req, res, next) => {
+  DailyTracker.createOrUpdateDailyTracker(
+    {
       ...req.body,
       employee_id: req.user.employee_id,
-    });
-
-    res.status(201).json({ message: "Daily activity saved successfully" });
-  } catch (err) {
-    next(err);
-  }
+    },
+    (err, result) => {
+      if (err) return next(err);
+      res.status(201).json({ message: "Daily activity saved successfully" });
+    },
+  );
 };
 
-exports.getMyDailyTracker = async (req, res, next) => {
-  try {
-    const [rows] = await DailyTracker.getDailyTrackerByEmployee(
-      req.user.employee_id,
-    );
-    res.json(rows);
-  } catch (err) {
-    next(err);
-  }
+exports.getMyDailyTracker = (req, res, next) => {
+  DailyTracker.getDailyTrackerByEmployee(
+    req.user.employee_id,
+    (err, result) => {
+      if (err) return next(err);
+      const rows = result.rows || [];
+      res.json(rows);
+    },
+  );
 };
 
-exports.getAllDailyTrackers = async (req, res, next) => {
-  try {
-    const [rows] = await DailyTracker.getAllDailyTrackers();
+exports.getAllDailyTrackers = (req, res, next) => {
+  DailyTracker.getAllDailyTrackers((err, result) => {
+    if (err) return next(err);
+    const rows = result.rows || [];
     res.json(rows);
-  } catch (err) {
-    next(err);
-  }
+  });
 };

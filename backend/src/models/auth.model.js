@@ -1,5 +1,7 @@
 const db = require("../config/db");
 
-exports.findUserByEmail = (email) => {
-  return db.execute("SELECT * FROM Users WHERE email = ?", [email]);
+// Callback-based query: findUserByEmail(email, callback)
+exports.findUserByEmail = (email, callback) => {
+  const sql = 'SELECT * FROM "Users" WHERE email = $1';
+  db.query(sql, [email], callback);
 };

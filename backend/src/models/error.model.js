@@ -1,37 +1,42 @@
 const db = require("../config/db");
 
-exports.createError = (data) => {
+// Callback-based queries
+exports.createError = (data, callback) => {
   const sql = `
-    INSERT INTO Errors
-    (employee_id, category, sub_category, description, is_repeated, severity)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT INTO "Errors"
+    (employee_id, title, description, category, severity, status)
+    VALUES ($1, $2, $3, $4, $5, $6)
   `;
-  return db.execute(sql, [
-    data.employee_id,
-    data.category,
-    data.sub_category,
-    data.description,
-    data.is_repeated,
-    data.severity,
-  ]);
+  db.query(
+    sql,
+    [
+      data.employee_id,
+      data.title,
+      data.description,
+      data.category,
+      data.severity || "medium",
+      data.status || "open",
+    ],
+    callback,
+  );
 };
 
-exports.getAllErrors = () => {
-  return db.execute(`
+exports.getAllErrors = (callback) => {
+  const sql = `
     SELECT e.*, emp.name AS employee_name
-    FROM Errors e
-    JOIN Employees emp ON emp.id = e.employee_id
+    FROM "Errors" e
+    JOIN "Employees" emp ON emp.id = e.employee_id
     ORDER BY e.created_at DESC
-  `);
+  `;
+  db.query(sql, [], callback);
 };
 
-exports.getErrorById = (id) => {
-  return db.execute("SELECT * FROM Errors WHERE id = ?", [id]);
+exports.getErrorById = (id, callback) => {
+  const sql = 'SELECT * FROM "Errors" WHERE id = $1';
+  db.query(sql, [id], callback);
 };
 
-exports.updateErrorStatus = (id, isStillFaced) => {
-  return db.execute("UPDATE Errors SET is_still_faced = ? WHERE id = ?", [
-    isStillFaced,
-    id,
-  ]);
+exports.updateErrorStatus = (id, status, callback) => {
+  const sql = 'UPDATE "Errors" SET status = $1 WHERE id = $2';
+  db.query(sql, [status, id], callback);
 };

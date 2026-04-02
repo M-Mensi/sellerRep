@@ -1,28 +1,26 @@
 const db = require("../config/db");
 
-exports.addAction = (data) => {
+// Callback-based queries
+exports.addAction = (data, callback) => {
   const sql = `
-    INSERT INTO ErrorActions
-    (error_id, admin_id, action, status_after)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO "ErrorActions"
+    (error_id, action_by, action_type, action_text)
+    VALUES ($1, $2, $3, $4)
   `;
-  return db.execute(sql, [
-    data.error_id,
-    data.admin_id,
-    data.action,
-    data.status_after,
-  ]);
+  db.query(
+    sql,
+    [data.error_id, data.action_by, data.action_type, data.action_text],
+    callback,
+  );
 };
 
-exports.getTimelineByError = (errorId) => {
-  return db.execute(
-    `
+exports.getTimelineByError = (errorId, callback) => {
+  const sql = `
     SELECT ea.*, u.email AS admin_email
-    FROM ErrorActions ea
-    JOIN Users u ON u.id = ea.admin_id
-    WHERE ea.error_id = ?
+    FROM "ErrorActions" ea
+    JOIN "Users" u ON u.id = ea.action_by
+    WHERE ea.error_id = $1
     ORDER BY ea.created_at ASC
-  `,
-    [errorId],
-  );
+  `;
+  db.query(sql, [errorId], callback);
 };

@@ -1,19 +1,17 @@
 const Attendance = require("../models/attendance.model");
 
-exports.createAttendance = async (req, res, next) => {
-  try {
-    await Attendance.createAttendance(req.body);
+// Callback-based controllers
+exports.createAttendance = (req, res, next) => {
+  Attendance.createAttendance(req.body, (err, result) => {
+    if (err) return next(err);
     res.status(201).json({ message: "Attendance recorded" });
-  } catch (err) {
-    next(err);
-  }
+  });
 };
 
-exports.getEmployeeAttendance = async (req, res, next) => {
-  try {
-    const [rows] = await Attendance.getAttendanceByEmployee(req.params.id);
+exports.getEmployeeAttendance = (req, res, next) => {
+  Attendance.getAttendanceByEmployee(req.params.id, (err, result) => {
+    if (err) return next(err);
+    const rows = result.rows || [];
     res.json(rows);
-  } catch (err) {
-    next(err);
-  }
+  });
 };

@@ -1,19 +1,17 @@
 const Employee = require("../models/employee.model");
 
-exports.createEmployee = async (req, res, next) => {
-  try {
-    await Employee.createEmployee(req.body);
+// Callback-based controllers
+exports.createEmployee = (req, res, next) => {
+  Employee.createEmployee(req.body, (err, result) => {
+    if (err) return next(err);
     res.status(201).json({ message: "Employee created successfully" });
-  } catch (err) {
-    next(err);
-  }
+  });
 };
 
-exports.getEmployees = async (req, res, next) => {
-  try {
-    const [rows] = await Employee.getAllEmployees();
+exports.getEmployees = (req, res, next) => {
+  Employee.getAllEmployees((err, result) => {
+    if (err) return next(err);
+    const rows = result.rows || [];
     res.json(rows);
-  } catch (err) {
-    next(err);
-  }
+  });
 };
